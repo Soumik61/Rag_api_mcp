@@ -1,0 +1,13 @@
+dotenv
+uvicorn
+pydantic
+langchain
+langchain-community
+chromadb
+fastapi
+langchain-google-genai
+langchain-chroma
+fastapi
+fastapi-mcp
+redis
+httpcore

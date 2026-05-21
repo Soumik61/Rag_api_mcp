@@ -1,0 +1,31 @@
+﻿SOUMIK SINGH
+Gurgaon, Haryana  |  +91 6203055462  |  soumiksingh363@gmail.com  |  LinkedIn
+
+PROFESSIONAL SUMMARY
+Results-driven Software Engineer with 3+ years of experience designing and deploying enterprise-grade applications using Java, Python, and Spring Boot on GCP and AWS. Specialized in Generative AI, agentic workflows, and legacy COBOL-to-Java modernization. Google Certified Associate Cloud Engineer with a proven track record of automation-first development that accelerates project delivery and reduces operational overhead.
+TECHNICAL SKILLS
+Languages & Frameworks:  Java, Python  |  Spring Boot, FastAPI, Flask, LangChain, LangServe, Semantic Kernel, Streamlit
+Cloud & DevOps:  GCP, AWS  |  Docker, Kubernetes, Terraform, Jenkins, CI/CD, SonarQube, Snyk
+Databases & Other:  PostgreSQL, MySQL  |  REST APIs, Microservices, Maven, Power Automate, JSON
+GenAI & LLM Tools:  Azure OpenAI, LangChain, LCEL (LangChain Expression Language), Prompt Engineering, Agentic Workflows
+WORK EXPERIENCE
+Software Engineer - Ernst & Young (EY)	Jan 2023 - Present  |  Gurgaon, India
+• Architected AI agents via Semantic Kernel for intelligent enterprise report generation with contextual conversation history, reducing manual reporting effort by 60%.
+• Built Python scripts to parse COBOL copybooks, auto-generate sort cards, and execute Job Control Language (JCL) jobs for mainframe-to-cloud data migration, eliminating all manual effort in the process.
+• Developed a Generative AI Code Summarization application using Python, Azure OpenAI, LangChain, and LangChain Expression Language (LCEL); exposed REST endpoints via LangServe and deployed interactive UI on Streamlit.
+• Led COBOL-to-Java Spring Boot migration with prompt-driven HTML UI generation and GCP table persistence; spearheaded the Inventory Management and Code Analysis tooling suite.
+• Strengthened legacy modernization efforts through AI-powered code analysis and transformation, improving system modularity and reducing time-to-delivery across engagements.
+• Deployed production-grade services via Jenkins CI/CD, Kubernetes, Terraform, SonarQube, and Snyk on GCP cloud-native infrastructure for reliable and secure releases.
+• Collaborated with cross-functional teams to maintain code quality, ensure seamless migrations, and improve overall system performance.
+PROJECTS
+• Agentic Legacy Modernization [Java, Spring Boot, Semantic Kernel, GCP]  -  Converted COBOL mainframe logic to Java microservices; prompt-driven HTML UI auto-generation reduced frontend development effort by 70%.
+• Generative AI Code Summarization [Python, Azure OpenAI, LangChain, LangServe, Streamlit]  -  Built a cross-cloud application for code translation and summarization; REST API backend with interactive Streamlit UI, enabling 40% faster code reviews.
+• Mainframe Data Migration [Python, JCL, COBOL, GCP]  -  Automated copybook parsing and sort card generation; executed Job Control Language (JCL) jobs to migrate mainframe data to GCP, cutting migration time from days to hours.
+• AI Agent Report Generation [Python, Semantic Kernel, GCP]  -  Built a multi-agent orchestration system with persistent session context for on-demand enterprise reporting, cutting turnaround time by 60%.
+EDUCATION
+B.Tech - Electronics & Electrical Engineering
+KIIT Deemed University  |  2022
+ACHIEVEMENTS & CERTIFICATIONS
+• Awarded EY Spot Award 5 times for outstanding project contributions and delivery excellence.
+• Google Associate Cloud Engineer - Google Cloud
+• GitHub Copilot - 300 - GitHub
