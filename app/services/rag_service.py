@@ -1,3 +1,5 @@
+import hashlib
+import json
 import chromadb
 from typing import List
 from langchain_chroma import Chroma
@@ -7,6 +9,7 @@ from langchain_classic.chains.history_aware_retriever import create_history_awar
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+import redis
 from app.config import Settings
 from app.models import ChatMessage
 
@@ -34,6 +37,40 @@ class RagService:
         self.retriever = self.vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 4})
         self.standard_rag_chain = self._build_standard_rag_chain()
         self.conversational_rag_chain = self._build_conversational_rag_chain()
+
+        self.cache = redis.Redis(
+            host=Settings.REDIS_HOST,
+            port=Settings.REDIS_PORT,
+            password=Settings.REDIS_PASSWORD,
+            decode_responses=True
+        )
+        self.cache_ttl = 60 * 60
+
+    def _make_cache_key(self, question: str) -> str:
+        question_hash = hashlib.md5(question.lower().strip().encode()).hexdigest()
+        return f"rag_cache:{question_hash}"
+    
+    def _get_cache(self, question: str):
+        try:
+            key = self._make_cache_key(question)
+            data = self.cache.get(key)
+            if data:
+                print("Cache HIT:", question)
+                return json.loads(data)
+            print(f"Cache MISS: {question}")
+            return None
+        except Exception as e:
+            print(f"Cache get error: {e}")
+            return None
+        
+    def _set_cache(self, question: str, result: dict):
+        try:
+            key = self._make_cache_key(question)
+            self.cache.setex(key, self.cache_ttl, json.dumps(result))
+            print(f"Cached: {question}")
+        except Exception as e:
+            print(f"Cache set error: {e}")
+            
         
         
     def _build_standard_rag_chain(self):
@@ -102,16 +139,25 @@ class RagService:
         }
     
     def ask(self, question: str):
+        cached = self._get_cache(question)
+        if cached:
+            cached["cache"] = "HIT"
+            return cached
+        
         result = self.standard_rag_chain.invoke({"input": question})
         context_docs = result.get("context", [])
 
-        return {
+        response = {
             "mode":"standard_rag",
             "question": question,
             "answer": result.get("answer", "No answer generated."),
             "sources": self.extract_sources(context_docs),
             "context_count": len(context_docs),
         }
+
+        self._set_cache(question, response)
+        return response
+    
     
     def chat(self, question: str, chat_history: List[ChatMessage]):
         formatted_history = self.format_chat_history(chat_history)
