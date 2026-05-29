@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rag-api
+spec:
+  replicas: 2                    # 2 pods chalenge
+  selector:
+    matchLabels:
+      app: rag-api
+  template:
+    metadata:
+      labels:
+        app: rag-api
+    spec:
+      containers:
+        - name: rag-api
+          image: soumik61/rag-api:latest    # tumhara Docker Hub image
+          ports:
+            - containerPort: 8080
+          env:
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: GOOGLE_API_KEY
+            - name: CHROMA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: CHROMA_API_KEY
+            - name: CHROMA_TENANT
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: CHROMA_TENANT
+            - name: CHROMA_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: CHROMA_DATABASE
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: REDIS_HOST
+            - name: REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: REDIS_PORT
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rag-secrets
+                  key: REDIS_PASSWORD
