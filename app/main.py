@@ -6,6 +6,7 @@ from app.config import Settings
 from app.models import QueryRequest, ChatRequest, SessionChatRequest
 from app.services.rag_service import RagService
 from app.services.session_service import SessionService
+from prometheus_fastapi_instrumentator import Instrumentator
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -16,6 +17,8 @@ async def lifespan(app: FastAPI):
     app.state.session_service = None
 
 app = FastAPI(title=Settings.APP_NAME, lifespan=lifespan)
+
+Instrumentator().instrument(app).expose(app)
 
 @app.get("/")
 def root():

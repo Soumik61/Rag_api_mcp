@@ -5,10 +5,6 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
-print("REDIS_HOST:", os.getenv("REDIS_HOST"))  # ← debug ke liye
-print("REDIS_PORT:", os.getenv("REDIS_PORT"))  # ← debug ke liye
-print("REDIS_PASSWORD:", os.getenv("REDIS_PASSWORD"))  # ← debug ke liye
-
 
 
 class Settings:

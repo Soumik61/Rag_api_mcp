@@ -20,8 +20,10 @@ spec:
       containers:
         - name: rag-api
           image: soumik61/rag-chat-api:latest    # tumhara Docker Hub image
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
+              name: http
           resources:
             requests:
               memory: "256Mi"
