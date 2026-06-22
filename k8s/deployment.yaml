@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: rag-api
-          image: soumik61/rag-chat-api:latest    # tumhara Docker Hub image
+          image: IMAGE_PLACEHOLDER    # tumhara Docker Hub image
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
