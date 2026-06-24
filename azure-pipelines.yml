@@ -1,0 +1,52 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  acrLoginServer: 'ragapiacr.azureecr.io'
+  imageName: 'rag-api'
+  resourceGroup: 'rag-api-rg'
+  aksCluster: 'rag-api-aks'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildAndPush
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Build & Push to ACR'
+            inputs:
+              azureSubscription: 'azure-service-connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az acr login --name ragapiacr
+                docker build -t $(acrLoginServer)/$(imageName):$(Build.SourceVersion) .
+                docker push $(acrLoginServer)/$(imageName):$(Build.SourceVersion)
+                docker tag $(acrLoginServer)/$(imageName):$(Build.SourceVersion) $(acrLoginServer)/$(imageName):latest
+                docker push $(acrLoginServer)/$(imageName):latest
+  
+  - stage: Deploy
+    dependsOn: Build
+    jobs:
+      - job: DeployToAKS
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Deploy to AKS'
+            inputs:
+              azureSubscription: 'azure-service-connection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az aks get-credentials --resource-group $(resourceGroup) --name $(aksCluster)
+                sed -i "s|IMAGE_PLACEHOLDER|$(acrLoginServer)/$(imageName):$(Build.SourceVersion)|g" k8s/deployment.yaml
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
+                kubectl apply -f k8s/prometheus.yaml
+                kubectl apply -f k8s/grafana.yaml
+                kubectl rollout status deployment/rag-api
