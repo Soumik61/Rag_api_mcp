@@ -4,7 +4,7 @@ trigger:
       - main
 
 variables:
-  acrLoginServer: 'ragapiacr.azureecr.io'
+  acrLoginServer: 'ragapiacr.azurecr.io'
   imageName: 'rag-api'
   resourceGroup: 'rag-api-rg'
   aksCluster: 'rag-api-aks'
