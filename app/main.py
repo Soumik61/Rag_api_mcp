@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
+from fastapi.concurrency import run_in_threadpool
 from fastapi_mcp import FastApiMCP
 from httpcore import request
 from app.config import Settings
@@ -39,9 +40,11 @@ def health():
         raise HTTPException(status_code=500, detail=str(e))
     
 @app.post("/ask")
-def ask_question(request: QueryRequest):
+async def ask_question(request: QueryRequest):
     try:
-        return app.state.rag_service.ask(request.question)
+        result = await run_in_threadpool(app.state.rag_servicce.ask, request.question)
+        return result
+        # return app.state.rag_service.ask(request.question)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     

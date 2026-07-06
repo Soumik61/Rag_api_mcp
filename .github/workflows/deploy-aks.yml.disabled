@@ -36,11 +36,19 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v3
+        
+        - name: Azure Login
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-        - name: Set up kubeconfig
+        - name: Get AKS Credentials
           run: |
-            mkdir -p $HOME/.kube
-            echo "${{ secrets.AZURE_KUBECONFIG }}" | base64 -d > $HOME/.kube/config
+            az aks get-Credentials \
+              --resource-group rag-api-rg \
+              --name rag-api-aks \
+              --overwrite-existing
+
         
         - name: Deploy to AKS
           run: |

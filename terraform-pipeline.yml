@@ -1,0 +1,45 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'terraform/*'
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: TerraformInstaller@1
+    displayName: 'Install Terraform'
+    inputs:
+      terraformVersion: 'latest'
+
+  - task: AzureCLI@2
+    displayName: 'Terraform Init'
+    inputs:
+      azureSubscription: 'azure-service-connection'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      WorkingDirectory: 'terraform'
+      inlineScript: |
+        terraform init
+
+  - task: AzureCLI@2
+    displayName: 'Terraform Plan'
+    inputs:
+      azureSubscription: 'azure-service-connection'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      WorkingDirectory: 'terraform'
+      inlineScript: |
+        terraform plan
+  
+  - task: AzureCLI@2
+    displayName: 'Terraform Apply'
+    inputs:
+      azureSubscription: 'azure-service-connection'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      WorkingDirectory: 'terraform'
+      inlineScript: |
+        terraform apply -auto-approve

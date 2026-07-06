@@ -5,7 +5,14 @@ terraform {
             version = "~> 3.0"
         }
     }
+    backend "azurerm" {
+    resource_group_name  = "terraform-state-rg"
+    storage_account_name = "tfstateragapi"
+    container_name       = "tfstate"
+    key                  = "rag-api.tfstate"
 }
+}
+
 
 provider "azurerm" {
     features {}
